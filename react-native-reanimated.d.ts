@@ -102,7 +102,6 @@ declare module 'react-native-reanimated' {
       finished: AnimatedValue<number>;
       velocity: AnimatedValue<number>;
       position: AnimatedValue<number>;
-      prevPosition?: AnimatedValue<number>;
       time: AnimatedValue<number>;
     }
     export interface SpringConfig {
@@ -154,7 +153,7 @@ declare module 'react-native-reanimated' {
               | S[K]
               | AnimatedNode<
                   // allow `number` where `string` normally is to support colors
-                  S[K] extends (string | undefined) ? S[K] | number : S[K]
+                  S[K] extends string ? S[K] | number : S[K]
                 >)
     };
 
@@ -218,9 +217,6 @@ declare module 'react-native-reanimated' {
     export const neq: BinaryOperator<0 | 1>;
     export const and: MultiOperator<0 | 1>;
     export const or: MultiOperator<0 | 1>;
-    export function proc(
-      cb: (...params: Array<Animated.Value<number>>) => Adaptable<number>
-    ): (...args: Array<Adaptable<number>>) => AnimatedNode<number>;
     export function defined(value: Adaptable<any>): AnimatedNode<0 | 1>;
     export function not(value: Adaptable<any>): AnimatedNode<0 | 1>;
     export function set(
@@ -230,11 +226,11 @@ declare module 'react-native-reanimated' {
     export function concat(
       ...args: Array<Adaptable<string> | Adaptable<number>>,
     ): AnimatedNode<string>;
-    export function cond<T extends Value = number>(
+    export function cond(
       conditionNode: Adaptable<number>,
-      ifNode: Adaptable<T>,
-      elseNode?: Adaptable<T>,
-    ): AnimatedNode<T>;
+      ifNode: Adaptable<number>,
+      elseNode?: Adaptable<number>,
+    ): AnimatedNode<number>;
     export function block<T>(
       items: ReadonlyArray<Adaptable<T>>,
     ): AnimatedNode<T>;
